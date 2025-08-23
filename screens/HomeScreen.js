@@ -3,6 +3,8 @@ import { doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   Alert,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -59,89 +61,96 @@ export default function HomeScreen({ navigation }) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>🌙 Swalath Tracker</Text>
-      <Text style={styles.subtitle}>(1 Lakh Cycle)</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Input box on top */}
+        <TextInput
+          placeholder="Enter Swalath Number"
+          keyboardType="numeric"
+          value={input}
+          onChangeText={setInput}
+          style={styles.input}
+          placeholderTextColor="#888"
+        />
 
-      <View style={styles.card}>
-        <Text style={styles.stat}>📌 Goal: {goal}</Text>
-        <Text style={styles.stat}>✅ Completed: {completed}</Text>
-        <Text style={styles.stat}>📊 Balance: {goal - completed}</Text>
+        {/* Title */}
+        <Text style={styles.title}>🌙 Swalath Tracker</Text>
+        <Text style={styles.subtitle}>(1 Lakh Cycle)</Text>
 
-        <View style={styles.progressBarBackground}>
-          <View
-            style={[styles.progressBarFill, { width: `${progressPercent}%` }]}
-          />
+        {/* Buttons */}
+        <TouchableOpacity style={styles.button} onPress={addSwalath}>
+          <Text style={styles.buttonText}>➕ Add Swalath</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => navigation.navigate("History")}
+        >
+          <Text style={styles.secondaryButtonText}>📖 View History</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => navigation.navigate("Login", { setUserName })}
+        >
+          <Text style={styles.secondaryButtonText}>🔑 Login / Backup</Text>
+        </TouchableOpacity>
+
+        {/* Progress Info */}
+        <View style={styles.card}>
+          <Text style={styles.stat}>📌 Goal: {goal}</Text>
+          <Text style={styles.stat}>✅ Completed: {completed}</Text>
+          <Text style={styles.stat}>📊 Balance: {goal - completed}</Text>
+
+          <View style={styles.progressBarBackground}>
+            <View
+              style={[styles.progressBarFill, { width: `${progressPercent}%` }]}
+            />
+          </View>
+          <Text style={styles.progressText}>{progressPercent.toFixed(0)}%</Text>
         </View>
-        <Text style={styles.progressText}>{progressPercent.toFixed(0)}%</Text>
-      </View>
 
-      <TextInput
-        placeholder="Enter Swalath"
-        keyboardType="numeric"
-        value={input}
-        onChangeText={setInput}
-        style={styles.input}
-        placeholderTextColor="#888"
-      />
-
-      <TouchableOpacity style={styles.button} onPress={addSwalath}>
-        <Text style={styles.buttonText}>➕ Add Swalath</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.secondaryButton}
-        onPress={() => navigation.navigate("History")}
-      >
-        <Text style={styles.secondaryButtonText}>📖 View History</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.secondaryButton}
-        onPress={() => navigation.navigate("Login", { setUserName })}
-      >
-        <Text style={styles.secondaryButtonText}>🔑 Login / Backup</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.donateButton}
-        onPress={() => navigation.navigate("Donate")}
-      >
-        <Text style={styles.buttonText}>❤️ Donate</Text>
-      </TouchableOpacity>
-
-      {history.length > 0 && (
-        <View style={styles.historyBox}>
-          <Text style={styles.historyTitle}>Recent Swalath:</Text>
-          {history.slice(0, 5).map((item, index) => (
-            <Text key={index} style={styles.historyText}>
-              • {item.value} — {item.date}
-            </Text>
-          ))}
-        </View>
-      )}
-    </ScrollView>
+        {/* Recent Swalath */}
+        {history.length > 0 && (
+          <View style={styles.historyBox}>
+            <Text style={styles.historyTitle}>Recent Swalath:</Text>
+            {history.slice(0, 5).map((item, index) => (
+              <Text key={index} style={styles.historyText}>
+                • {item.value} — {item.date}
+              </Text>
+            ))}
+          </View>
+        )}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "black", // Dark background
+    backgroundColor: "#000",
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
     color: "white",
     textAlign: "center",
+    marginBottom: 5,
   },
   subtitle: {
     fontSize: 16,
     color: "#aaa",
-    marginBottom: 20,
+    marginBottom: 15,
     textAlign: "center",
   },
   card: {
@@ -149,7 +158,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 12,
     width: "100%",
-    marginBottom: 20,
+    marginVertical: 20,
     shadowColor: "#000",
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -201,19 +210,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   secondaryButtonText: { color: "white", fontSize: 16 },
-  donateButton: {
-    backgroundColor: "crimson",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginBottom: 20,
-    width: "100%",
-  },
   historyBox: {
     backgroundColor: "#1c1c1e",
     padding: 15,
     borderRadius: 10,
-    marginTop: 10,
+    marginTop: 20,
     width: "100%",
   },
   historyTitle: { color: "white", fontWeight: "bold", marginBottom: 8 },

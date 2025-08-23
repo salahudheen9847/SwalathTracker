@@ -12,8 +12,8 @@
       "supportsTablet": true
     },
     "android": {
-       "package": "com.salahudheen.swalathtracker",
-       "googleServicesFile": "./google-services.json",
+      "package": "com.salahudheen.swalathtracker",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -26,7 +26,6 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      
       [
         "expo-splash-screen",
         {
@@ -39,6 +38,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "499074b9-1abc-42c2-bff0-7e5f75c535aa"
+      }
     }
   }
 }
