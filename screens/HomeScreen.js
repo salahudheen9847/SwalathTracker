@@ -102,6 +102,13 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.secondaryButtonText}>🔑 Login / Backup</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={styles.donateButton}
+          onPress={() => navigation.navigate("Donate")}
+        >
+          <Text style={styles.buttonText}>❤️ Donate</Text>
+        </TouchableOpacity>
+
         {/* Progress Info */}
         <View style={styles.card}>
           <Text style={styles.stat}>📌 Goal: {goal}</Text>
@@ -210,6 +217,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   secondaryButtonText: { color: "white", fontSize: 16 },
+  donateButton: {
+    backgroundColor: "crimson",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 20,
+    width: "100%",
+  },
   historyBox: {
     backgroundColor: "#1c1c1e",
     padding: 15,
