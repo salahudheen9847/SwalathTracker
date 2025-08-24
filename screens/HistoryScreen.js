@@ -1,6 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { FlatList, Share, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Share,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function HistoryScreen() {
   const [history, setHistory] = useState([]);
@@ -9,13 +16,17 @@ export default function HistoryScreen() {
 
   useEffect(() => {
     (async () => {
-      const savedCompleted = await AsyncStorage.getItem("completedSwalath");
-      const savedHistory = await AsyncStorage.getItem("swalathHistory");
-      const savedUser = await AsyncStorage.getItem("userName");
+      try {
+        const savedCompleted = await AsyncStorage.getItem("completedSwalath");
+        const savedHistory = await AsyncStorage.getItem("swalathHistory");
+        const savedUser = await AsyncStorage.getItem("userName");
 
-      if (savedCompleted) setCompleted(parseInt(savedCompleted));
-      if (savedHistory) setHistory(JSON.parse(savedHistory));
-      if (savedUser) setUserName(savedUser);
+        if (savedCompleted) setCompleted(parseInt(savedCompleted));
+        if (savedHistory) setHistory(JSON.parse(savedHistory));
+        if (savedUser) setUserName(savedUser);
+      } catch (e) {
+        console.log("Error loading history", e);
+      }
     })();
   }, []);
 
@@ -24,18 +35,23 @@ export default function HistoryScreen() {
 
     const text =
       `🌙 Swalath Tracker\n👤 Name: ${userName || "Unknown"}\n\n✅ Total Completed: ${completed}\n\n📖 History:\n` +
-      history.map((item) => `• ${item.value} — ${item.date}`).join("\n");
+      history
+        .map((item) => `• ${item.value} — ${item.date}`)
+        .join("\n");
 
     try {
       await Share.share({ message: text });
     } catch (error) {
-      console.log(error);
+      console.log("Share error:", error);
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>📖 Swalath History</Text>
+
+      {/* Total Count */}
+      <Text style={styles.totalText}>✅ Total: {completed}</Text>
 
       <TouchableOpacity style={styles.shareButton} onPress={shareHistory}>
         <Text style={styles.shareText}>📤 Share</Text>
@@ -45,7 +61,7 @@ export default function HistoryScreen() {
         <Text style={styles.noHistory}>No history found</Text>
       ) : (
         <FlatList
-          data={history}
+          data={[...history].reverse()} // 🔥 latest first
           keyExtractor={(_, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.historyItem}>
@@ -62,10 +78,39 @@ export default function HistoryScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "black", padding: 20 },
-  title: { fontSize: 24, fontWeight: "bold", color: "white", marginBottom: 15, textAlign: "center" },
-  shareButton: { backgroundColor: "#007bff", padding: 12, borderRadius: 8, alignItems: "center", marginBottom: 15 },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#0f0",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  shareButton: {
+    backgroundColor: "#007bff",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 15,
+  },
   shareText: { color: "white", fontSize: 16, fontWeight: "bold" },
-  noHistory: { color: "#aaa", fontSize: 16, textAlign: "center", marginTop: 20 },
-  historyItem: { backgroundColor: "#1c1c1e", padding: 12, borderRadius: 8, marginBottom: 10 },
+  noHistory: {
+    color: "#aaa",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 20,
+  },
+  historyItem: {
+    backgroundColor: "#1c1c1e",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
   historyText: { color: "white", fontSize: 16 },
 });
