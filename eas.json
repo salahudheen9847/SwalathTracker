@@ -2,12 +2,7 @@
   "build": {
     "production": {
       "android": {
-        "buildType": "apk"
-      }
-    },
-    "development": {
-      "android": {
-        "buildType": "apk"
+        "buildType": "aab"
       }
     }
   }

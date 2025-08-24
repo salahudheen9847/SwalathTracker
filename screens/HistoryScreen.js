@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
   FlatList,
   Share,
@@ -14,28 +15,31 @@ export default function HistoryScreen() {
   const [completed, setCompleted] = useState(0);
   const [userName, setUserName] = useState("");
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const savedHistory = await AsyncStorage.getItem("swalathHistory");
-        const savedUser = await AsyncStorage.getItem("userName");
-        const parsedHistory = savedHistory ? JSON.parse(savedHistory) : [];
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        try {
+          const savedHistory = await AsyncStorage.getItem("swalathHistory");
+          const savedUser = await AsyncStorage.getItem("userName");
+          const parsedHistory = savedHistory ? JSON.parse(savedHistory) : [];
 
-        // Sort by id descending → latest entry first
-        const sortedHistory = parsedHistory.sort((a, b) => b.id - a.id);
+          // Sort by id descending → latest entry first
+          const sortedHistory = parsedHistory.sort(
+            (a, b) => Number(b.id) - Number(a.id)
+          );
 
-        setHistory(sortedHistory);
-        setUserName(savedUser || "");
+          setHistory(sortedHistory);
+          setUserName(savedUser || "");
 
-        // calculate total from history
-        const total = parsedHistory.reduce((sum, item) => sum + item.value, 0);
-        setCompleted(total);
-
-      } catch (e) {
-        console.log("Error loading history", e);
-      }
-    })();
-  }, []);
+          // calculate total from history
+          const total = parsedHistory.reduce((sum, item) => sum + item.value, 0);
+          setCompleted(total);
+        } catch (e) {
+          console.log("Error loading history", e);
+        }
+      })();
+    }, [])
+  );
 
   const shareHistory = async () => {
     if (history.length === 0) return;
