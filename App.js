@@ -1,7 +1,9 @@
+// App.js
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import DonateScreen from "./screens/DonateScreen"; // ✅
+import CounterScreen from "./screens/CounterScreen"; // 👈 പുതിയ Counter Screen
+import DonateScreen from "./screens/DonateScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -23,6 +25,8 @@ export default function App() {
         <Stack.Screen name="History" component={HistoryScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Donate" component={DonateScreen} />
+        <Stack.Screen name="Counter" component={CounterScreen} /> 
+        {/* 👆 Counter Screen ചേർത്തു */}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,25 +1,23 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
-export default function LoginScreen({ route, navigation }) {
-  const { setUserName } = route.params;
+export default function LoginScreen({ navigation }) {
   const [inputName, setInputName] = useState("");
 
   const saveName = async () => {
     if (!inputName) return;
-    await AsyncStorage.setItem("userName", inputName);
-    setUserName(inputName);
-    navigation.goBack();
+    await AsyncStorage.setItem("userName", inputName); // 🔹 save AsyncStorage
+    navigation.goBack(); // 🔹 just go back, HomeScreen AsyncStorage-ൽ നിന്ന് വായിക്കും
   };
 
   return (
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: "flex-start", // 👆 Top-il edukkum
+    justifyContent: "flex-start",
     padding: 20,
   },
   card: {
@@ -63,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1c1c1e",
     padding: 25,
     borderRadius: 12,
-    marginTop: 20, // little spacing from very top
+    marginTop: 20,
   },
   title: {
     color: "white",

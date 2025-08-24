@@ -41,3 +41,13 @@ app-example
 # Firebase
 android/app/google-services.json
 
+# Firebase / Google config
+google-services.json
+android/app/google-services.json
+
+# Keystore
+*.jks
+*.keystore
+
+# Node modules
+node_modules/

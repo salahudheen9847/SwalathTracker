@@ -1,3 +1,4 @@
+// HomeScreen.js
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -21,15 +22,20 @@ export default function HomeScreen({ navigation }) {
   const [history, setHistory] = useState([]);
   const [userName, setUserName] = useState("");
 
+  // Load saved data + username
   useEffect(() => {
     (async () => {
       const savedCompleted = await AsyncStorage.getItem("completedSwalath");
       const savedHistory = await AsyncStorage.getItem("swalathHistory");
+      const savedUserName = await AsyncStorage.getItem("userName");
+
       if (savedCompleted) setCompleted(parseInt(savedCompleted));
       if (savedHistory) setHistory(JSON.parse(savedHistory));
+      if (savedUserName) setUserName(savedUserName);
     })();
   }, []);
 
+  // Save data to storage + Firestore
   useEffect(() => {
     (async () => {
       await AsyncStorage.setItem("completedSwalath", completed.toString());
@@ -69,7 +75,7 @@ export default function HomeScreen({ navigation }) {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Input box on top */}
+        {/* Input */}
         <TextInput
           placeholder="Enter Swalath Number"
           keyboardType="numeric"
@@ -84,26 +90,36 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.subtitle}>(1 Lakh Cycle)</Text>
 
         {/* Buttons */}
-        <TouchableOpacity style={styles.button} onPress={addSwalath}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#007bff" }]}
+          onPress={addSwalath}
+        >
           <Text style={styles.buttonText}>➕ Add Swalath</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.secondaryButton}
+          style={[styles.button, { backgroundColor: "#6a1b9a" }]}
           onPress={() => navigation.navigate("History")}
         >
-          <Text style={styles.secondaryButtonText}>📖 View History</Text>
+          <Text style={styles.buttonText}>📖 View History</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.secondaryButton}
-          onPress={() => navigation.navigate("Login", { setUserName })}
+          style={[styles.button, { backgroundColor: "#ff9800" }]}
+          onPress={() => navigation.navigate("Counter")}
         >
-          <Text style={styles.secondaryButtonText}>🔑 Login / Backup</Text>
+          <Text style={styles.buttonText}>🔢 Counter</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.donateButton}
+          style={[styles.button, { backgroundColor: "#009688" }]}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>🔑 Login / Backup</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "crimson" }]}
           onPress={() => navigation.navigate("Donate")}
         >
           <Text style={styles.buttonText}>❤️ Donate</Text>
@@ -200,7 +216,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: "#007bff",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
@@ -208,23 +223,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   buttonText: { color: "white", fontSize: 18, fontWeight: "bold" },
-  secondaryButton: {
-    backgroundColor: "#2c2c2e",
-    padding: 14,
-    borderRadius: 10,
-    alignItems: "center",
-    marginBottom: 10,
-    width: "100%",
-  },
-  secondaryButtonText: { color: "white", fontSize: 16 },
-  donateButton: {
-    backgroundColor: "crimson",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginBottom: 20,
-    width: "100%",
-  },
   historyBox: {
     backgroundColor: "#1c1c1e",
     padding: 15,
