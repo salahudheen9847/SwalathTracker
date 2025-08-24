@@ -17,13 +17,20 @@ export default function HistoryScreen() {
   useEffect(() => {
     (async () => {
       try {
-        const savedCompleted = await AsyncStorage.getItem("completedSwalath");
         const savedHistory = await AsyncStorage.getItem("swalathHistory");
         const savedUser = await AsyncStorage.getItem("userName");
+        const parsedHistory = savedHistory ? JSON.parse(savedHistory) : [];
 
-        if (savedCompleted) setCompleted(parseInt(savedCompleted));
-        if (savedHistory) setHistory(JSON.parse(savedHistory));
-        if (savedUser) setUserName(savedUser);
+        // Sort by id descending → latest entry first
+        const sortedHistory = parsedHistory.sort((a, b) => b.id - a.id);
+
+        setHistory(sortedHistory);
+        setUserName(savedUser || "");
+
+        // calculate total from history
+        const total = parsedHistory.reduce((sum, item) => sum + item.value, 0);
+        setCompleted(total);
+
       } catch (e) {
         console.log("Error loading history", e);
       }
@@ -35,9 +42,7 @@ export default function HistoryScreen() {
 
     const text =
       `🌙 Swalath Tracker\n👤 Name: ${userName || "Unknown"}\n\n✅ Total Completed: ${completed}\n\n📖 History:\n` +
-      history
-        .map((item) => `• ${item.value} — ${item.date}`)
-        .join("\n");
+      history.map((item) => `• ${item.value} — ${item.date}`).join("\n");
 
     try {
       await Share.share({ message: text });
@@ -61,7 +66,7 @@ export default function HistoryScreen() {
         <Text style={styles.noHistory}>No history found</Text>
       ) : (
         <FlatList
-          data={[...history].reverse()} // 🔥 latest first
+          data={history} // already sorted latest first
           keyExtractor={(_, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.historyItem}>
