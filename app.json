@@ -16,8 +16,8 @@
       "versionCode": 4,
       "targetSdkVersion": 33,
       "permissions": [
-        "AD_ID"
-      ],"permissions": ["com.google.android.gms.permission.AD_ID"],
+        "com.google.android.gms.permission.AD_ID"
+      ],
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
