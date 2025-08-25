@@ -1,17 +1,10 @@
-import { Alert, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function DonateScreen() {
-  const upiId = "9745525150@okicici"; // 🔑 replace with your correct UPI ID
   const phoneNumber = "+919745525150";
 
   const handleDonate = async () => {
-    const url = `upi://pay?pa=${upiId}&pn=Swalath%20Tracker&am=&cu=INR`;
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      Linking.openURL(url);
-    } else {
-      Alert.alert("UPI not supported", "Please use the number: " + phoneNumber);
-    }
+    Alert.alert("Donation Info", "Please use the number: " + phoneNumber);
   };
 
   return (
@@ -19,7 +12,6 @@ export default function DonateScreen() {
       <Text style={styles.title}>❤️ Support Swalath Tracker</Text>
       <Text style={styles.subtitle}>Donate via Google Pay / PhonePe / Paytm</Text>
       <Text style={styles.text}>📱 Phone: {phoneNumber}</Text>
-      <Text style={styles.text}>💳 UPI ID: {upiId}</Text>
 
       <TouchableOpacity style={styles.button} onPress={handleDonate}>
         <Text style={styles.buttonText}>💰 Donate Now</Text>
