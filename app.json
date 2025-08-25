@@ -15,7 +15,9 @@
       "package": "com.salahudheen.swalathtracker",
       "versionCode": 3,
       "targetSdkVersion": 33,
-      "permissions": ["com.google.android.gms.permission.AD_ID"],
+      "permissions": [
+        "AD_ID"
+      ],
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
