@@ -4,7 +4,7 @@
     "slug": "SwalathTracker",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/new-icon.png",
     "scheme": "swalathtracker",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
