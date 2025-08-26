@@ -4,13 +4,15 @@
     "slug": "SwalathTracker",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/new-icon.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "swalathtracker",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+
     "ios": {
       "supportsTablet": true
     },
+
     "android": {
       "package": "com.salahudheen.swalathtracker",
       "versionCode": 5,
@@ -19,31 +21,36 @@
         "AD_ID"
       ],
       "googleServicesFile": "./google-services.json",
+
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+
       "edgeToEdgeEnabled": true
     },
+
     "web": {
       "bundler": "metro",
       "output": "single",
       "favicon": "./assets/images/favicon.png"
     },
+
     "plugins": [
       [
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
+          "resizeMode": "cover",
           "backgroundColor": "#ffffff"
         }
       ]
     ],
+
     "experiments": {
       "typedRoutes": true
     },
+
     "extra": {
       "eas": {
         "projectId": "499074b9-1abc-42c2-bff0-7e5f75c535aa"
