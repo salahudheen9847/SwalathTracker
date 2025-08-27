@@ -2,7 +2,7 @@
   "expo": {
     "name": "SwalathTracker",
     "slug": "SwalathTracker",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "swalathtracker",
@@ -15,7 +15,7 @@
 
     "android": {
       "package": "com.salahudheen.swalathtracker",
-      "versionCode": 7,
+      "versionCode": 8,
       "targetSdkVersion": 33,
       "permissions": [
         "AD_ID"
