@@ -3,15 +3,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { db } from "../firebase";
 
@@ -111,12 +111,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.buttonText}>🔢 Counter</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: "#009688" }]}
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={styles.buttonText}>🔑 Login / Backup</Text>
-        </TouchableOpacity>
+        {/* 🔑 Login / Backup button removed */}
 
         <TouchableOpacity
           style={[styles.button, { backgroundColor: "crimson" }]}
